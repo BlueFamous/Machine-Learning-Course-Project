@@ -1,0 +1,52 @@
+---
+title: "ml 1"
+author: "Nartai Bywood 2018011999 IE91"
+date: "2021/12/14"
+output: html_document
+---
+---
+title: "Untitled"
+author: "Nartai Bywood 2018011999 IE91"
+date: "2021/12/8"
+output:
+  html_document: default
+  pdf_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r cars}
+library(openxlsx)
+library(glmnet)
+library(foreign)
+bc <- read.csv("C:\\Users\\HP\\Desktop\\01212.csv",header = FALSE)
+bc <- na.omit(bc)
+y<-as.matrix(bc[,49])
+x<-as.matrix(bc[,c(2:48)])
+f1 = glmnet(x, y, family="binomial", nlambda=100, alpha=1)
+plot(f1, xvar="lambda", label=TRUE)
+cvfit=cv.glmnet(x,y)
+plot(cvfit)
+cvfit$lambda.min#求出最小值
+cvfit$lambda.1se#求出最小值一个标准误的λ值
+```
+
+```{r cars2}
+l.coef2<-coef(cvfit$glmnet.fit,s=0.000037329,exact = F)
+l.coef1<-coef(cvfit$glmnet.fit,s=0.000289,exact = F)
+l.coef1
+l.coef2
+
+```
+
+```{r cars}
+library(openxlsx)
+library(glmnet)
+library(foreign)
+bc <- read.csv("C:\\Users\\HP\\Desktop\\0120.csv",header = TRUE)
+bc <- na.omit(bc)
+y<-as.matrix(bc[1,])
+y
+
+```
