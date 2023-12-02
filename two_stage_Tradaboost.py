@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-使用平台及版本：
+Platforms：
     two-stage-Tradaboost: Python 3.8.12 64-bit | Qt 5.9.7 | PyQt5 5.9.2 | Windows 10 
-    012预测: Python 3.7.6| Windows 10
-    合并属性: Python 3.7.6| Windows 10
-    合并文件: Python 3.7.6| Windows 10
-    简单的机器学习: Python 3.7.6| Windows 10
-    添加label: Python 3.7.6| Windows 10
-    lasso降维 R4.0.4 64-bit | Windows 10
-    过采样:Python 3.9.5 64-bit | Qt 5.9.6 | PyQt5 5.9.2 | Windows 10
-深度学习框架：ELM，极限学习机
+    012Prediction: Python 3.7.6| Windows 10
+    Attributes Integration: Python 3.7.6| Windows 10
+    Files Integration: Python 3.7.6| Windows 10
+    Simple Machine Learning: Python 3.7.6| Windows 10
+    Adding labels: Python 3.7.6| Windows 10
+    lasso Regression R4.0.4 64-bit | Windows 10
+    Over Sampling:Python 3.9.5 64-bit | Qt 5.9.6 | PyQt5 5.9.2 | Windows 10
+Machine Learning Framework：Extreme Learning Machine
 """
 """
 Spyder Editor
@@ -27,16 +27,16 @@ import math
 
 from sklearn import svm
 
-path = "D:\\学习之都\\大三上\\机器学习与大数据\\大作业\\小测试\\少维度" # 设置工作目录
+path = "D:\\学习之都\\大三上\\机器学习与大数据\\大作业\\小测试\\少维度"
 
 
-# H 测试样本分类结果
-# TrainS 原训练样本 np数组,行数为m
-# TrainA 辅助训练样本,行数为n
-# LabelS 原训练样本标签
-# LabelA 辅助训练样本标签
-# Test  测试样本
-# N 迭代次数
+# H Tesing the Classification Results
+# TrainS Traditional Training Samples np, number of lines is m
+# TrainA Auxiliary Training Samples, number of lines is n
+# LabelS Labels of Original Training Samples
+# LabelA Labels of Auxiliary Training Samples
+# Test  Testing Samples
+# N Times of Iteration
 
 def tradaboost(trans_S, label_S, test, N):
     #trans_label = np.concatenate((label_A, label_S), axis=0)
@@ -49,7 +49,7 @@ def tradaboost(trans_S, label_S, test, N):
 
     #test_data = np.concatenate((trans_data, test), axis=0)
     '''
-    # 初始化权重
+    # Weight Initialization
     weights_A = np.ones([row_A, 1]) / row_A #row number is A, col number is 1
     weights_S = np.ones([row_S, 1]) / row_S
     weights = np.concatenate((weights_A, weights_S), axis=0)
@@ -57,7 +57,7 @@ def tradaboost(trans_S, label_S, test, N):
     #bata
     bata = 1 / (1 + np.sqrt(2 * np.log(row_A / N)))
 
-    # 存储每次迭代的标签和bata值？
+    # Store the labels and Beta
     bata_T = np.zeros([1, N])
     result_label = np.ones([row_A + row_S + row_T, N])
     '''
@@ -82,13 +82,13 @@ def tradaboost(trans_S, label_S, test, N):
 
         test_data = np.concatenate((trans_data, test), axis=0)
         if h == 0:
-            # 初始化权重
+            # Weight Initialization
             weights_A = np.ones([row_A, 1]) / row_A #row number is A, col number is 1
             weights_S = np.ones([row_S, 1]) / row_S
             weights = np.concatenate((weights_A, weights_S), axis=0)
             #bata
             #bata = 1 / (1 + np.sqrt(2 * np.log(row_A / N)))
-            # 存储每次迭代的标签和bata值？
+            # Store the labels and Beta
             bata_T = np.zeros([1, N])
             result_label = np.ones([row_A + row_S + row_T, N])
         # initial finished.
@@ -115,17 +115,17 @@ def tradaboost(trans_S, label_S, test, N):
                 error_rate = 0.5
             if error_rate == 0:
                 N = i
-                break  # 防止过拟合
+                break  # To prevent overfitting
                 # error_rate = 0.001
     
             bata_T[0, i] = error_rate / (1 - error_rate)
     
-            # 调整源域样本权重
+            # Adjust the sample weights
             Zt = row_S / (row_S + row_T) + (i + 1) / (N - 1) * (1 - row_S / (row_S + row_T))
             for j in range(row_S):
                 weights[row_A + j] = weights[row_A + j] / Zt
     
-            # 调整辅域样本权重
+            # Adjust the sample weights in auxiliary region
             for j in range(row_A):
                 weights[j] = weights[j] * np.power(bata_T[0, i], error_rate)/ Zt
             
@@ -133,7 +133,6 @@ def tradaboost(trans_S, label_S, test, N):
     sum1 = 0
     sum0 = 0
     for i in range(row_T):
-        # 跳过训练数据的标签
         left = np.sum(
             result_label[row_A + row_S + i, int(np.ceil(N / 2)):N] * np.log(1 / bata_T[0, int(np.ceil(N / 2)):N]))
         right = 0.5 * np.sum(np.log(1 / bata_T[0, int(np.ceil(N / 2)):N]))
@@ -192,11 +191,9 @@ def list_dir(file_dir):
     dir_list = os.listdir(file_dir)
     for cur_file in dir_list:
         path = os.path.join(file_dir,cur_file)
-        #判断是文件夹还是文件
         if os.path.isfile(path):
             # print("{0} : is file!".format(cur_file))
             dir_files = os.path.join(file_dir, cur_file)
-        #判断是否存在.csv文件，如果存在则获取路径信息写入到list_csv列表中
         if os.path.splitext(path)[1] == '.csv':
             csv_file = os.path.join(file_dir, cur_file)
             # print(os.path.join(file_dir, cur_file))
