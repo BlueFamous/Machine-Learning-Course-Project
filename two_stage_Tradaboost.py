@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-小组成员：黄一浩，王昱正，纳日泰
 使用平台及版本：
     two-stage-Tradaboost: Python 3.8.12 64-bit | Qt 5.9.7 | PyQt5 5.9.2 | Windows 10 
     012预测: Python 3.7.6| Windows 10
