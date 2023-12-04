@@ -28,8 +28,8 @@ f1 = glmnet(x, y, family="binomial", nlambda=100, alpha=1)
 plot(f1, xvar="lambda", label=TRUE)
 cvfit=cv.glmnet(x,y)
 plot(cvfit)
-cvfit$lambda.min#求出最小值
-cvfit$lambda.1se#求出最小值一个标准误的λ值
+cvfit$lambda.min#Find the mean value
+cvfit$lambda.1se#Find the lamda within one standard diviation
 ```
 
 ```{r cars2}
